@@ -12,10 +12,12 @@ import requests
 @permission_classes([IsAuthenticated])
 def send_message_view(request):
     if not request.user.is_authenticated:
-        return Response({"result": "Error sending telegram message", "errors": 'aiai'},
+        return Response({"result": "Error sending telegram message", "errors": 'You need to be authenticated to send messages'},
                         status=status.HTTP_400_BAD_REQUEST)
+    # Ho hostato il bot con un dyno gratuito su Heroku. Essendo il piano free può darsi che un tempo di inattività
+    # troppo lungo poi si stoppi e vada riavviato. Nel dubbio ho messo qui il file per avviarlo in locale "bot.py"
     bot_token = '<token>'
-    bot_chat_id = '<il tuo chat id>' # Scrivendo al bot /chatinfo fornisce l'id della chat
+    bot_chat_id = '<id_chat>' # Scrivendo al bot /chatinfo fornisce l'id della chat
 
     serializer = SendMessageSerializer(data=request.data)
     if not serializer.is_valid(raise_exception=False):
